@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>血清Na濃度予測アプリ</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>血清Na濃度予測</h1>
+        </header>
+
+        <div class="tabs">
+            <button class="tab-btn active" id="tab-urine" type="button">尿排泄のみ考慮 (24h)</button>
+            <button class="tab-btn" id="tab-infusion" type="button">輸液のみ考慮</button>
+            <button class="tab-btn" id="tab-combined" type="button">輸液＋尿排泄</button>
+        </div>
+
+        <!-- 尿排泄のみ考慮 フォーム -->
+        <div class="form-container active" id="form-urine">
+            <form id="calculator-form-urine">
+                <div class="input-grid">
+                    <div class="input-group">
+                        <label for="u-weight">体重 (kg)</label>
+                        <input type="number" id="u-weight" step="0.1" value="60" required>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="u-water-ratio">水分率 (%)</label>
+                        <input type="number" id="u-water-ratio" step="1" value="60" required>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="u-current-na">現在のNa濃度 (mEq/L)</label>
+                        <input type="number" id="u-current-na" step="0.1" value="140" required>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="u-urine-vol-hr">1時間当たり尿量 (mL/hr)</label>
+                        <input type="number" id="u-urine-vol-hr" step="1" value="50" required>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="u-urine-na">尿中Na濃度 (mEq/L)</label>
+                        <input type="number" id="u-urine-na" step="0.1" value="80" required>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="u-urine-k">尿中K濃度 (mEq/L)</label>
+                        <input type="number" id="u-urine-k" step="0.1" value="40" required>
+                    </div>
+                </div>
+
+                <button type="submit" class="submit-btn" style="background-color: #0ea5e9;">24時間後の予測を計算する</button>
+            </form>
+        </div>
+
+        <!-- 輸液のみ考慮 フォーム -->
+        <div class="form-container" id="form-infusion">
+            <form id="calculator-form-infusion">
+                <div class="input-grid">
+                    <div class="input-group">
+                        <label for="weight">体重 (kg)</label>
+                        <input type="number" id="weight" step="0.1" value="60" required>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="water-ratio">水分率 (%) ※男性60, 女性50など</label>
+                        <input type="number" id="water-ratio" step="1" value="60" required>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="volume">輸液量 (L)</label>
+                        <input type="number" id="volume" step="0.1" value="1.0" required>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="current-na">現在のNa濃度 (mEq/L)</label>
+                        <input type="number" id="current-na" step="0.1" value="140" required>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="infusion-preset">輸液プリセットから選択 (自動入力)</label>
+                        <select id="infusion-preset">
+                            <option value="custom">カスタム（手動入力）</option>
+                            <option value="154,0">生理食塩水 (Na: 154, K: 0)</option>
+                            <option value="130,4">乳酸リンゲル液 (Na: 130, K: 4)</option>
+                            <option value="77,0">半生理食塩水 (Na: 77, K: 0)</option>
+                            <option value="35,20">1号液/開始液 (Na: 35, K: 20)</option>
+                            <option value="0,0">5%ブドウ糖液 (Na: 0, K: 0)</option>
+                        </select>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="infusate-na">輸液中Na濃度 (mEq/L)</label>
+                        <input type="number" id="infusate-na" step="0.1" value="154" required>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="infusate-k">輸液中K濃度 (mEq/L)</label>
+                        <input type="number" id="infusate-k" step="0.1" value="0" required>
+                    </div>
+                </div>
+
+                <button type="submit" class="submit-btn" style="background-color: #f97316;">計算する</button>
+            </form>
+        </div>
+
+        <!-- 輸液＋尿排泄 (24h) フォーム -->
+        <div class="form-container" id="form-combined">
+            <form id="calculator-form-combined">
+                <div class="input-grid">
+                    <div class="input-group">
+                        <label for="c-weight">体重 (kg)</label>
+                        <input type="number" id="c-weight" step="0.1" value="60" required>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="c-water-ratio">水分率 (%)</label>
+                        <input type="number" id="c-water-ratio" step="1" value="60" required>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="c-current-na">現在のNa濃度 (mEq/L)</label>
+                        <input type="number" id="c-current-na" step="0.1" value="140" required>
+                    </div>
+
+                    <div class="input-group" style="grid-column: 1 / -1;">
+                        <hr style="border: 0; border-top: 1px dashed var(--border-color); margin: 5px 0;">
+                    </div>
+
+                    <div class="input-group">
+                        <label for="c-urine-vol">尿量予測量 (mL)</label>
+                        <input type="number" id="c-urine-vol" step="10" value="1000" required>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="c-urine-na">尿中Na濃度 (mEq/L)</label>
+                        <input type="number" id="c-urine-na" step="0.1" value="80" required>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="c-urine-k">尿中K濃度 (mEq/L)</label>
+                        <input type="number" id="c-urine-k" step="0.1" value="40" required>
+                    </div>
+
+                    <div class="input-group" style="grid-column: 1 / -1;">
+                        <hr style="border: 0; border-top: 1px dashed var(--border-color); margin: 5px 0;">
+                    </div>
+
+                    <div class="input-group">
+                        <label for="c-infusion-preset">輸液プリセット (自動入力)</label>
+                        <select id="c-infusion-preset">
+                            <option value="custom">カスタム（手動入力）</option>
+                            <option value="154,0">生理食塩水 (Na: 154, K: 0)</option>
+                            <option value="130,4">乳酸リンゲル液 (Na: 130, K: 4)</option>
+                            <option value="77,0">半生理食塩水 (Na: 77, K: 0)</option>
+                            <option value="35,20">1号液/開始液 (Na: 35, K: 20)</option>
+                            <option value="0,0">5%ブドウ糖液 (Na: 0, K: 0)</option>
+                        </select>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="c-volume">輸液量 (L)</label>
+                        <input type="number" id="c-volume" step="0.1" value="1.0" required>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="c-infusate-na">輸液中Na濃度 (mEq/L)</label>
+                        <input type="number" id="c-infusate-na" step="0.1" value="154" required>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="c-infusate-k">輸液中K濃度 (mEq/L)</label>
+                        <input type="number" id="c-infusate-k" step="0.1" value="0" required>
+                    </div>
+                </div>
+
+                <button type="submit" class="submit-btn" style="background-color: #10b981;">計算する</button>
+            </form>
+        </div>
+
+        <div id="result-container" class="result-container hidden">
+            <h2>予測結果</h2>
+            <div class="result-card">
+                <p>予測血清Na濃度</p>
+                <div class="value"><span id="result-final-na">--</span> mEq/L</div>
+            </div>
+            <div class="result-card">
+                <p>Na変化量 (ΔNa)</p>
+                <div class="value"><span id="result-delta-na">--</span> mEq/L</div>
+            </div>
+            <p class="note">※この計算は目安です。<span id="note-text">尿中電解質濃度や尿量が24時間一定であることを仮定した簡易予測です。</span></p>
+        </div>
+    </div>
+
+    <!-- JavaScriptファイル読み込み -->
+    <script src="script.js"></script>
+</body>
+
+</html>

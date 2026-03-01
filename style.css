@@ -1,0 +1,269 @@
+/* 全体の基本設定 */
+:root {
+    --bg-color: #fffaf0;
+    /* 暖かみのあるオフホワイト */
+    --card-bg: #ffffff;
+    --primary-color: #f97316;
+    /* 暖色系（オレンジ）メインカラー */
+    --primary-hover: #ea580c;
+    --text-main: #431407;
+    /* 濃いブラウン系で目に優しく */
+    --text-sub: #78350f;
+    --border-color: #fed7aa;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Noto Sans JP', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    line-height: 1.6;
+    /* レスポンシブの基本：スマホでもPCでも余白が綺麗に出るように */
+    padding: 20px 15px;
+}
+
+/* メインの白い枠 */
+.container {
+    background-color: var(--card-bg);
+    max-width: 600px;
+    margin: 0 auto;
+    /* 中央寄せ */
+    padding: 30px;
+    border-radius: 16px;
+    box-shadow: 0 10px 25px rgba(249, 115, 22, 0.1);
+    /* オレンジ系の薄い影 */
+    border: 1px solid var(--border-color);
+}
+
+header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+h1 {
+    font-size: 1.6rem;
+    color: var(--primary-color);
+    margin-bottom: 5px;
+}
+
+header p {
+    font-size: 0.9rem;
+    color: var(--text-sub);
+}
+
+/* タブ切替のデザイン */
+.tabs {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 25px;
+}
+
+.tab-btn {
+    padding: 10px 20px;
+    background-color: transparent;
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    color: var(--text-sub);
+    font-size: 0.95rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.tab-btn.active {
+    background-color: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+}
+
+.tab-btn#tab-urine.active {
+    background-color: #0ea5e9;
+    /* 尿排泄モードは青系に */
+    border-color: #0ea5e9;
+}
+
+.tab-btn#tab-combined.active {
+    background-color: #10b981;
+    /* 輸液＋尿排泄モードは緑系に */
+    border-color: #10b981;
+}
+
+/* フォームの切り替え用 */
+.form-container {
+    display: none;
+}
+
+.form-container.active {
+    display: block;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+/* 入力枠のレイアウト */
+.input-grid {
+    display: grid;
+    /* PCでは2列、スマホでは下のメディアクエリで1列になるように設定 */
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 25px;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    font-size: 0.85rem;
+    font-weight: 700;
+    margin-bottom: 6px;
+    color: var(--text-sub);
+}
+
+input,
+select {
+    padding: 12px;
+    border: 1.5px solid #fdba74;
+    border-radius: 8px;
+    font-size: 1rem;
+    background-color: #fffaf0;
+    transition: border-color 0.2s;
+    color: var(--text-main);
+}
+
+input:focus,
+select:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    background-color: #fff;
+    box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.2);
+}
+
+/* プルダウンメニュー特有のスタイル */
+select {
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23f97316' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 16px;
+    padding-right: 40px;
+}
+
+/* ボタンのデザイン */
+.submit-btn {
+    width: 100%;
+    padding: 14px;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s;
+    box-shadow: 0 4px 6px rgba(249, 115, 22, 0.3);
+}
+
+.submit-btn:hover {
+    background-color: var(--primary-hover);
+}
+
+.submit-btn:active {
+    transform: translateY(2px);
+}
+
+/* 結果表示エリア */
+.result-container {
+    margin-top: 30px;
+    padding-top: 25px;
+    border-top: 2px dashed var(--border-color);
+}
+
+.result-container.hidden {
+    display: none;
+    /* 初期状態では隠す */
+}
+
+h2 {
+    text-align: center;
+    font-size: 1.3rem;
+    margin-bottom: 20px;
+    color: var(--text-main);
+}
+
+.result-card {
+    background-color: #ffedd5;
+    /* 薄いオレンジ背景 */
+    padding: 20px;
+    border-radius: 12px;
+    text-align: center;
+    margin-bottom: 15px;
+    border: 1px solid #fed7aa;
+}
+
+.result-card p {
+    font-size: 0.9rem;
+    color: var(--text-sub);
+    font-weight: bold;
+}
+
+.value {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: var(--primary-hover);
+    margin-top: 5px;
+}
+
+.value span {
+    font-size: 2.5rem;
+}
+
+.note {
+    font-size: 0.8rem;
+    color: #9a3412;
+    text-align: center;
+    margin-top: 15px;
+}
+
+/* === レスポンシブWebデザイン === */
+/* 画面幅が500px以下（スマホなど）の場合のスタイル */
+@media (max-width: 500px) {
+    .input-grid {
+        grid-template-columns: 1fr;
+        /* 1列にする */
+        gap: 15px;
+    }
+
+    .container {
+        padding: 20px 15px;
+    }
+
+    h1 {
+        font-size: 1.4rem;
+    }
+
+    .value {
+        font-size: 1.8rem;
+    }
+
+    .value span {
+        font-size: 2.2rem;
+    }
+}
